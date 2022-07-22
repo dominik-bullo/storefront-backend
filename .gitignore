@@ -3,3 +3,5 @@
 /dist
 database.json
 populate.sql
+.vscode
+/coverage
