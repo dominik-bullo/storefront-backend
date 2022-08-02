@@ -1,10 +1,4 @@
 /node_modules
+/coverage
 .env
 /dist
-database.json
-populate.sql
-.vscode
-/coverage
-20220724190428-add-data.js
-20220724190428-add-data-up.sql
-20220724190428-add-data-down.sql
