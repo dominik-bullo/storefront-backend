@@ -32,29 +32,33 @@ If authentification is required, token needs to be passed in the header of the r
 
 ## Data Shapes
 
-    ##### Product
-    - id: string
-    - name: string
-    - price: string
-    - category: string
+#### Product
 
-    ##### User
-    - id: string
-    - email: string
-    - first_name: string
-    - last_name: string
-    - password: string
+- id: string
+- name: string
+- price: string
+- category: string
 
-    ##### Order
-    - id: string
-    - user_id: string
-    - status: string
+#### User
 
-    ##### Order Item
-    - id: string
-    - order_id: string
-    - product_id: string
-    - quantity: number
+- id: string
+- email: string
+- first_name: string
+- last_name: string
+- password: string
+
+#### Order
+
+- id: string
+- user_id: string
+- status: string
+
+#### Order Item
+
+- id: string
+- order_id: string
+- product_id: string
+- quantity: number
 
 ## Database Schema
 

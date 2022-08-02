@@ -12,12 +12,14 @@ A simple backend for a store.
 ## Getting Started
 
 - Clone the repository
-- Create `.env` file in the root directory of the project (you can use `.env.sample` as a template)
+- Create `.env` file in the root directory of the project (you can use `.env.sample` as a template, here you can also set the ports for the server and the database)
 - Run `npm install` to install all dependencies
 - Run `npm run db` to create and run docker container for the database (postgres)
 - Run `npm run migrate-up` to create the database tables
 - Run `npm start` to start the server
 - Run `npm test` to run the tests
+
+You can find the information about **API endpoints**, **data shapes** and **database schema** in the `REQUIREMENTS.md` file.
 
 ## Technologies
 
@@ -30,5 +32,3 @@ This application takes advantage of the following libraries, among others:
 - jsonwebtoken from npm for working with JWTs
 - bcrypt from npm for hashing passwords
 - jest from npm for testing
-
-You can find the information about **API endpoints**, **data shapes** and **database schema** in the `REQUIREMENTS.md` file.

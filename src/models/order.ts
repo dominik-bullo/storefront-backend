@@ -1,15 +1,15 @@
 import Client from "../database";
 
 export interface Order {
-  id: number;
-  user_id: number;
+  id: string;
+  user_id: string;
   status: string;
 }
 
 export interface OrderItem {
-  id: number;
-  order_id: number;
-  product_id: number;
+  id: string;
+  order_id: string;
+  product_id: string;
   quantity: number;
 }
 
