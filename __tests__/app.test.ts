@@ -6,17 +6,17 @@ describe("Integration Tests", () => {
   let token: string;
   let openOrderId: string;
   describe("/users/auth/ [POST]: User authentication", () => {
-    it("should return a 401 when no credentials are provided", async () => {
+    it("should return a 401 if no credentials are provided", async () => {
       const response = await request(app).post("/users/auth");
       expect(response.status).toBe(401);
     });
-    it("should return a 401 when invalid credentials are provided", async () => {
+    it("should return a 401 if invalid credentials are provided", async () => {
       const response = await request(app)
         .post("/users/auth")
         .send({ email: "wrongUser@mail.com", password: "wrongPassword" });
       expect(response.status).toBe(401);
     });
-    it("should return a token when valid credentials are provided", async () => {
+    it("should return a token if valid credentials are provided", async () => {
       const response = await request(app)
         .post("/users/auth")
         .send({ email: "test@test.ts", password: "test123" });
@@ -26,7 +26,7 @@ describe("Integration Tests", () => {
     });
   });
   describe("/users/ [GET]: User index", () => {
-    it("should return a 401 when no token is provided", async () => {
+    it("should return a 401 if no token is provided", async () => {
       const response = await request(app).get("/users");
       expect(response.status).toBe(401);
     });
@@ -39,7 +39,7 @@ describe("Integration Tests", () => {
     });
   });
   describe("/users/:id/ [GET]: Show user by id", () => {
-    it("should return a 401 when no token is provided", async () => {
+    it("should return a 401 if no token is provided", async () => {
       const response = await request(app).get("/users/1");
       expect(response.status).toBe(401);
     });
@@ -52,7 +52,7 @@ describe("Integration Tests", () => {
     });
   });
   describe("/users/ [POST]: Create user", () => {
-    it("should return a 401 when no token is provided", async () => {
+    it("should return a 401 if no token is provided", async () => {
       const response = await request(app).post("/users");
       expect(response.status).toBe(401);
     });
@@ -102,7 +102,7 @@ describe("Integration Tests", () => {
     });
   });
   describe("/products/ [POST]: Create product", () => {
-    it("should return a 401 when no token is provided", async () => {
+    it("should return a 401 if no token is provided", async () => {
       const response = await request(app).post("/products");
       expect(response.status).toBe(401);
     });
@@ -131,7 +131,7 @@ describe("Integration Tests", () => {
     });
   });
   describe("/orders/:userId [POST]: Create order", () => {
-    it("should return a 401 when no token is provided", async () => {
+    it("should return a 401 if no token is provided", async () => {
       const response = await request(app).post("/orders/1");
       expect(response.status).toBe(401);
     });
@@ -146,7 +146,7 @@ describe("Integration Tests", () => {
     });
   });
   describe("/orders/:userId [GET]: Show orders by user id", () => {
-    it("should return a 401 when no token is provided", async () => {
+    it("should return a 401 if no token is provided", async () => {
       const response = await request(app).get("/orders/1");
       expect(response.status).toBe(401);
     });
@@ -154,13 +154,12 @@ describe("Integration Tests", () => {
       const response = await request(app)
         .get("/orders/1")
         .set("x-auth-token", `${token}`);
-      console.log(response.body);
       expect(response.status).toBe(200);
       expect(response.body.id).toBeDefined();
     });
   });
   describe("/orders/:userId/done [GET]: Show completed orders by user id", () => {
-    it("should return a 401 when no token is provided", async () => {
+    it("should return a 401 if no token is provided", async () => {
       const response = await request(app).get("/orders/1/done");
       expect(response.status).toBe(401);
     });
@@ -173,7 +172,7 @@ describe("Integration Tests", () => {
     });
   });
   describe("/orders/:id [PATCH]: Toggle order status", () => {
-    it("should return a 401 when no token is provided", async () => {
+    it("should return a 401 if no token is provided", async () => {
       const response = await request(app).patch(`/orders/${openOrderId}`);
       expect(response.status).toBe(401);
     });
@@ -186,7 +185,7 @@ describe("Integration Tests", () => {
     });
   });
   describe("/products-in-orders [GET]: Show products in orders", () => {
-    it("should return a 401 when no token is provided", async () => {
+    it("should return a 401 if no token is provided", async () => {
       const response = await request(app).get("/products-in-orders");
       expect(response.status).toBe(401);
     });

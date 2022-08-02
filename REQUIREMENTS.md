@@ -30,16 +30,42 @@ If authentification is required, token needs to be passed in the header of the r
 - Current Order by user (args: user id) [token required] `/orders/:userId [GET]`
 - Completed Orders by user (args: user id) [token required] `/orders/:userId/done [GET]`
 
+## Data Shapes
+
+    ##### Product
+    - id: string
+    - name: string
+    - price: string
+    - category: string
+
+    ##### User
+    - id: string
+    - email: string
+    - first_name: string
+    - last_name: string
+    - password: string
+
+    ##### Order
+    - id: string
+    - user_id: string
+    - status: string
+
+    ##### Order Item
+    - id: string
+    - order_id: string
+    - product_id: string
+    - quantity: number
+
 ## Database Schema
 
-#### products
+#### Table 'products'
 
 - id [INT - PK]
 - name [VARCHAR(100) - NOT NULL]
 - price [DECIMAL(10,2) - NOT NULL]
 - category [VARCHAR(30) - NOT NULL]
 
-#### user
+#### Table 'users'
 
 - id [INT - PK]
 - email [VARCHAR(100)]
@@ -47,15 +73,15 @@ If authentification is required, token needs to be passed in the header of the r
 - lastName [VARCHAR(100) - NOT NULL]
 - password [VARCHAR(100) - NOT NULL]
 
-#### orders
+#### Table 'orders'
 
 - id [INT - PK]
-- user_id [INT - FK]
+- user_id [INT - FK to users]
 - status of order (`active` or `complete`) [VARCHAR(10) - NOT NULL]
 
-#### order-items
+#### Table 'order-items'
 
 - id [INT - PK]
-- order_id [INT - FK]
-- product_id [INT - FK]
+- order_id [INT - FK to orders]
+- product_id [INT - FK to products]
 - quantity [INT - NOT NULL]
