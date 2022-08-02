@@ -14,38 +14,12 @@ export interface OrderItem {
 }
 
 export class OrderStore {
-  // Orders
-
-  async index(): Promise<Order[]> {
-    try {
-      const conn = await Client.connect();
-      const sql = "SELECT * FROM orders";
-      const result = await conn.query(sql);
-      conn.release();
-      return result.rows;
-    } catch (err) {
-      throw new Error(`Cannot get orders: ${err}`);
-    }
-  }
-
-  async show(id: string): Promise<Order> {
-    try {
-      const conn = await Client.connect();
-      const sql = "SELECT * FROM orders WHERE id = $1";
-      const result = await conn.query(sql, [id]);
-      conn.release();
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Cannot get order: ${err}`);
-    }
-  }
-
-  async create(order: Omit<Order, "id">): Promise<Order> {
+  async create(userId: string): Promise<Order> {
     try {
       const conn = await Client.connect();
       const sql =
-        "INSERT INTO orders (user_id, status) VALUES ($1, $2) RETURNING *";
-      const result = await conn.query(sql, [order.user_id, order.status]);
+        "INSERT INTO orders (user_id, status) VALUES ($1, 'active') RETURNING *";
+      const result = await conn.query(sql, [userId]);
       conn.release();
       return result.rows[0];
     } catch (err) {
@@ -53,81 +27,46 @@ export class OrderStore {
     }
   }
 
-  async update(order: Order): Promise<Order> {
+  async showByUserId(userId: string): Promise<Order> {
     try {
       const conn = await Client.connect();
       const sql =
-        "UPDATE orders SET user_id = $1, status = $2 WHERE id = $3 RETURNING *";
-      const result = await conn.query(sql, [
-        order.user_id,
-        order.status,
-        order.id,
-      ]);
+        "SELECT * FROM orders WHERE user_id = $1 AND status = 'active' ORDER BY id DESC";
+      const result = await conn.query(sql, [userId]);
       conn.release();
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Cannot update order: ${err}`);
+      throw new Error(`Cannot get orders by user: ${err}`);
     }
   }
 
-  async delete(id: string): Promise<Order> {
-    try {
-      const conn = await Client.connect();
-      const sql = "DELETE FROM orders WHERE id = $1 RETURNING *";
-      const result = await conn.query(sql, [id]);
-      conn.release();
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Cannot delete order: ${err}`);
-    }
-  }
-
-  // Order Items
-
-  async addOrderItem(
-    orderId: number,
-    productId: number,
-    qty: number
-  ): Promise<OrderItem> {
+  async showCompletedByUserId(userId: string): Promise<Order[]> {
     try {
       const conn = await Client.connect();
       const sql =
-        "INSERT INTO order_items (order_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *";
-      const result = await conn.query(sql, [orderId, productId, qty]);
+        "SELECT * FROM orders WHERE user_id = $1 AND status = 'complete' ORDER BY id ASC";
+      const result = await conn.query(sql, [userId]);
       conn.release();
-      return result.rows[0];
+      return result.rows;
     } catch (err) {
-      throw new Error(`Cannot add order item: ${err}`);
+      throw new Error(`Cannot get orders by user: ${err}`);
     }
   }
 
-  async updateOrderItem(orderItem: OrderItem): Promise<OrderItem> {
+  async toggleStatus(orderId: string): Promise<Order> {
     try {
       const conn = await Client.connect();
       const sql =
-        "UPDATE order_items SET order_id = $1, product_id = $2, quantity = $3 WHERE id = $4 RETURNING *";
-      const result = await conn.query(sql, [
-        orderItem.order_id,
-        orderItem.product_id,
-        orderItem.quantity,
-        orderItem.id,
-      ]);
+        "UPDATE orders SET status = CASE WHEN status = 'active' THEN 'complete' ELSE 'active' END WHERE id = $1 RETURNING *";
+      const result = await conn.query(sql, [orderId]);
       conn.release();
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Cannot update order item: ${err}`);
+      throw new Error(`Cannot toggle order status: ${err}`);
     }
   }
 
-  async deleteOrderItem(id: string): Promise<OrderItem> {
-    try {
-      const conn = await Client.connect();
-      const sql = "DELETE FROM order_items WHERE id = $1 RETURNING *";
-      const result = await conn.query(sql, [id]);
-      conn.release();
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Cannot delete order item: ${err}`);
-    }
+  async end(): Promise<void> {
+    await Client.end();
   }
 }

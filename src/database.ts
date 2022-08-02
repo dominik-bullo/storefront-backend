@@ -12,8 +12,6 @@ const {
   NODE_ENV,
 } = process.env;
 
-console.log(`NODE_ENV: ${NODE_ENV}`);
-
 const client = new Pool({
   host: POSTGRES_HOST,
   database: NODE_ENV === "test" ? POSTGRES_DB_TEST : POSTGRES_DB,

@@ -1,9 +1,9 @@
 import Client from "../database";
 
 export interface Product {
-  id: number;
+  id: string;
   name: string;
-  price: number;
+  price: string;
   category: string;
 }
 
@@ -11,7 +11,7 @@ export class ProductStore {
   async index(): Promise<Product[]> {
     try {
       const conn = await Client.connect();
-      const sql = "SELECT * FROM products";
+      const sql = "SELECT * FROM products ORDER BY id ASC";
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
@@ -47,5 +47,9 @@ export class ProductStore {
     } catch (err) {
       throw new Error(`Cannot create product: ${err}`);
     }
+  }
+
+  async end(): Promise<void> {
+    await Client.end();
   }
 }

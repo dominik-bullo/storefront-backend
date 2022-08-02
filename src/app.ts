@@ -1,16 +1,18 @@
-import express, { Request, Response } from "express";
-import booksRouter from "./handler/books";
+import express, { Application, Request, Response } from "express";
 import productsRouter from "./handler/products";
 import usersRouter from "./handler/users";
+import ordersRouter from "./handler/orders";
+import dashboardRouter from "./handler/dashboard";
 import bodyParser from "body-parser";
 
-const app: express.Application = express();
+const app: Application = express();
 
 app
   .use(bodyParser.json())
-  .use("/books", booksRouter)
   .use("/products", productsRouter)
-  .use("/users", usersRouter);
+  .use("/users", usersRouter)
+  .use("/orders", ordersRouter)
+  .use("/", dashboardRouter);
 
 app.get("/", function (req: Request, res: Response) {
   res.send("Hello World!");
